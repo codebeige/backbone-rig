@@ -1,0 +1,14 @@
+{
+  "name": "backbone-rig",
+  "version": "0.0.0",
+  "description": "Rig your Backbone applications.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "backbone"
+  ],
+  "author": "Tibor Claassen",
+  "license": "MIT"
+}
