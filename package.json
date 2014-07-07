@@ -7,8 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "backbone"
+    "backbone", "routes", "path helpers"
   ],
   "author": "Tibor Claassen",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codebeige/backbone-rig.git"
+  },
 }
