@@ -2,9 +2,10 @@
   "name": "backbone-rig",
   "version": "0.0.0",
   "description": "Rig your Backbone applications.",
-  "main": "index.js",
+  "main": "build/backbone-rig.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "gulp build"
   },
   "keywords": [
     "backbone",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "browserify": "^4.2.0",
+    "coffee-script": "^1.7.1",
     "coffeeify": "^0.6.0",
     "del": "^0.1.1",
     "gulp": "^3.8.5",
@@ -33,8 +35,5 @@
     "gulp-uglify": "^0.3.1",
     "gulp-util": "^2.2.19",
     "vinyl-source-stream": "^0.1.1"
-  },
-  "dependencies": {
-    "coffee-script": "^1.7.1"
   }
 }
