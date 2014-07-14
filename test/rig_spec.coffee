@@ -1,6 +1,7 @@
-Rig = require 'lib/rig'
+require 'test/support'
+rig = require 'lib/rig'
 
 describe 'Rig', ->
 
   it 'exists', ->
-    expect(Rig).to.have.property 'Router'
+    expect(rig).to.have.property 'Router'

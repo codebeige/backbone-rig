@@ -20,14 +20,15 @@ gulp.task 'build', ->
   browserify
     entries: ['./lib/rig.coffee']
     extensions: ['.coffee']
-  .bundle
-    standalone: 'Rig'
-  .on('error', gutil.log)
+  .bundle standalone: 'Rig'
+  .on 'error', gutil.log
 
-  .pipe(src 'backbone-rig.js')
-  .pipe(gulp.dest 'build')
+  .pipe src 'backbone-rig.js'
+  .pipe gulp.dest 'build'
 
-  .pipe(streamify uglify())
-  .pipe(rename suffix: '.min')
-  .pipe(gulp.dest 'build')
-  .pipe(streamify size())
+  .pipe streamify uglify()
+  .pipe rename suffix: '.min'
+  .pipe gulp.dest 'build'
+  .pipe streamify size()
+
+gulp.task 'default', ['build']

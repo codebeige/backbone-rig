@@ -4,7 +4,7 @@
   "description": "Rig your Backbone applications.",
   "main": "build/backbone-rig.js",
   "scripts": {
-    "test": "browserify -p [ mocaccino -R dot ] --extension=.coffee test/index.coffee | phantomic --brout",
+    "test": "browserify -p [ mocaccino -R dot ] --extension=.coffee test | phantomic --brout",
     "prepublish": "gulp build"
   },
   "keywords": [
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "browserify": "^4.2.0",
+    "chai": "^1.9.1",
     "coffee-script": "^1.7.1",
     "coffeeify": "^0.6.0",
     "del": "^0.1.1",
