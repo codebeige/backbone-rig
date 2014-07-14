@@ -14,11 +14,11 @@ gulp.task 'clean', (done) ->
   del ['build'], done
 
 gulp.task 'clobber', ['clean'], (done) ->
-  del ['node_modules'], done
+  del ['node_modules/*', '!node_modules/lib', '!node_modules/test'], done
 
 gulp.task 'build', ->
   browserify
-    entries: ['./src/rig.coffee']
+    entries: ['./lib/rig.coffee']
     extensions: ['.coffee']
   .bundle
     standalone: 'Rig'

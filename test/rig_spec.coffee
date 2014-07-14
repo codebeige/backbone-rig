@@ -1,4 +1,4 @@
-Rig = require('src/rig')
+Rig = require 'lib/rig'
 
 describe 'Rig', ->
 

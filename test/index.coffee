@@ -1,1 +1,1 @@
-require 'spec/rig_spec.coffee'
+require 'test/rig_spec.coffee'

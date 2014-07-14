@@ -4,7 +4,7 @@
   "description": "Rig your Backbone applications.",
   "main": "build/backbone-rig.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "browserify -p [ mocaccino -R dot ] --extension=.coffee test/index.coffee | phantomic --brout",
     "prepublish": "gulp build"
   },
   "keywords": [
@@ -34,6 +34,7 @@
     "gulp-streamify": "0.0.5",
     "gulp-uglify": "^0.3.1",
     "gulp-util": "^2.2.19",
+    "mocaccino": "^0.8.0",
     "vinyl-source-stream": "^0.1.1"
   }
 }
