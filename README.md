@@ -8,6 +8,36 @@ Rig your Backbone applications.
 `Backbone.Router`. Load the library into your project after *Backbone* is
 available and extend from the corresponding *Rig* base classes.
 
+##Startup
+
+Bootstrap different parts of your application independetly by registering
+initializers. An *Initialzer* can be a function or any object that responds to
+`#initialize()`, `#start()` or both.
+
+    Widget =
+
+      initialize: (config, app) ->
+        // returning a promise will defer startup
+        jQuery.getJSON "#{config.apiRoot}/widget/defaults.json"
+          .then (data) -> _(config).defaults data
+
+      start: (config, app) ->
+        // called after ALL initialize promises are resolved
+        view = new Widget.View config.widget
+        config.container.append view.render().el
+
+
+A shared config object ist passed to all initializer calls.
+
+    app = MyApp.create apiRoot: 'https://myapp.net/api'
+
+    app.register Widget, widget: { with: 50, height: 200 }
+
+    app.register -> Backbone.history.start()
+
+    app.start container: $('#my-app')
+
+
 ##Routes
 
 Configure your routes using an expressive and flexible syntax. For maximum
