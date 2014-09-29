@@ -1,6 +1,6 @@
 require 'spec/support'
 rig = require 'lib/rig'
-router = require 'lib/routes/router.coffee'
+router = require 'lib/routes/router'
 
 describe 'Rig', ->
 

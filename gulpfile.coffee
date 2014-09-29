@@ -20,7 +20,8 @@ gulp.task 'build', ->
   browserify
     entries: ['./lib/rig.coffee']
     extensions: ['.coffee']
-  .bundle standalone: 'Rig'
+    standalone: 'Rig'
+  .bundle()
   .on 'error', gutil.log
 
   .pipe src 'backbone-rig.js'
