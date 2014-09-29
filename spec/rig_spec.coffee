@@ -1,4 +1,4 @@
-require 'test/support'
+require 'spec/support'
 rig = require 'lib/rig'
 router = require 'lib/routes/router.coffee'
 

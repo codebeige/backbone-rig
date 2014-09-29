@@ -14,7 +14,7 @@ gulp.task 'clean', (done) ->
   del ['build'], done
 
 gulp.task 'clobber', ['clean'], (done) ->
-  del ['node_modules/*', '!node_modules/lib', '!node_modules/test'], done
+  del ['node_modules/*', '!node_modules/lib', '!node_modules/spec'], done
 
 gulp.task 'build', ->
   browserify

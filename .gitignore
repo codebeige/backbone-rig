@@ -1,4 +1,4 @@
 node_modules/*
 !node_modules/lib
-!node_modules/test
+!node_modules/spec
 build
