@@ -1,4 +1,5 @@
 'use strict'
 
 module.exports =
-  Router: require 'lib/routes/router'
+  Application: require 'lib/application'
+  Router:      require 'lib/router'

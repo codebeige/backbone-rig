@@ -1,2 +1,2 @@
 require('coffee-script/register')
-module.exports = require('./src/rig.coffee')
+module.exports = require('./lib/rig.coffee')
