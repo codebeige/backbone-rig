@@ -127,3 +127,15 @@ describe 'Rig.Application', ->
         it 'defers call of initialzers', ->
           application.start()
           expect(initializer).to.not.have.been.called
+
+    describe 'events', ->
+
+      callback = null
+
+      beforeEach ->
+        callback = @spy()
+
+      it 'can broadcast events', ->
+        application.on 'bingo', callback
+        application.trigger 'bingo'
+        expect(callback).to.have.been.calledOnce

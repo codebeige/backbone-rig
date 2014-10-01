@@ -15,6 +15,8 @@ lift = (initializer) ->
 
 class Application
 
+  _(@::).extend Backbone.Events
+
   config: null
 
   constructor: (@config = {}) ->

@@ -2,13 +2,15 @@
 
 Rig your Backbone applications.
 
-##Dependencies and Usage
+## Dependencies and Usage
 
 *Rig* extends the functionality of *Backbone* by extending `Backbone.View` and
 `Backbone.Router`. Load the library into your project after *Backbone* is
 available and extend from the corresponding *Rig* base classes.
 
-##Startup
+
+
+## Application startup
 
 Bootstrap different parts of your application independetly by registering
 initializers. An *Initialzer* can be a function or any object that responds to
@@ -38,7 +40,12 @@ A shared config object ist passed to all initializer calls.
     app.start container: $('#my-app')
 
 
-##Routes
+*Rig.Application* extends *Backbone.Events* so that it can be used as a central
+event hub.
+
+
+
+## Routes
 
 Configure your routes using an expressive and flexible syntax. For maximum
 compatibility with *Backbone.Router* the standard hash map style is also
