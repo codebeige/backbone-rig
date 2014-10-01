@@ -1,26 +1,36 @@
 'use strict'
 
 lift = (initializer) ->
-  start: if _.isFunction initializer.start
-           _(initializer.start).bind initializer
-         else
-           _(initializer).bind undefined
+  initialize: if _.isFunction initializer.initialize
+                  _(initializer.initialize).bind initializer
+              else
+                ->
+
+  start:      if _.isFunction initializer.start
+                _(initializer.start).bind initializer
+              else if _.isFunction initializer
+                _(initializer).bind undefined
+              else
+                ->
 
 class Application
 
   config: null
 
   constructor: (@config = {}) ->
-    @_init = $.Deferred()
+    @_inits = []
+    @_start = $.Deferred()
 
   register: (initializer) ->
     initializer = lift initializer
-    @_init.then initializer.start
+    @_inits.push initializer.initialize @config, @
+    @_start.then initializer.start
     @
 
   start: (config) ->
     $.extend true, @config, config
-    @_init.resolve @config, @
+    $.when @_inits...
+      .then => @_start.resolve @config, @
     @
 
 module.exports = Application
