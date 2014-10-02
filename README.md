@@ -45,6 +45,24 @@ event hub.
 
 
 
+## Rendering views
+
+Extending *Rig.View* provides sensible defaults for updating the content by
+rendering a template from serialzed data.
+
+    class TaskView extends Rig.View
+
+      template: Templates['task']
+
+      initialize: ->
+        // update content of $el when model changes
+        @listenTo @model, 'change', @render
+
+      data: ->
+        title: @model.get 'title'
+
+
+
 ## Routes
 
 Configure your routes using an expressive and flexible syntax. For maximum

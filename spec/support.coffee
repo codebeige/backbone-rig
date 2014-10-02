@@ -9,6 +9,15 @@ backbone   = require 'backbone'
 window.expect = chai.expect
 chai.use sinonChai
 
+window._ = underscore
+
+jquery.fx.off = yes
+window.$ = window.jQuery = jquery
+
+
+window.Backbone = backbone
+Backbone.$ = jquery
+
 do ->
 
   sandbox = null
@@ -22,10 +31,3 @@ do ->
 
   afterEach ->
     sandbox.restore()
-
-jquery.fx.off = yes
-window.$ = window.jQuery = jquery
-
-window._ = underscore
-
-window.Backbone = backbone
