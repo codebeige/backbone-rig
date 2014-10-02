@@ -1,5 +1,8 @@
 'use strict'
 
+list = (value) ->
+  if _.isArray(value) then value else [ value ]
+
 class View extends Backbone.View
 
   markup: ->
@@ -23,7 +26,13 @@ class View extends Backbone.View
     @
 
   render: ->
-    @content().html @template @data()
+    data   = list @data()
+    chunks = _(data).map @template
+    $els   = $ @content()
+    if $els.length is 1
+      $els.html chunks.join "\n"
+    else
+      $els.html (i) -> chunks[i]
     @
 
 module.exports = View

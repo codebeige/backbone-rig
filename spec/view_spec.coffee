@@ -81,3 +81,24 @@ describe 'Rig.View', ->
         template.returns '<li>Do something</li>'
         view.render()
         expect(ul).to.have.$html '<li>Do something</li>'
+
+      context 'updates on multiple items', ->
+
+        it 'renders template for every item in data', ->
+          view.data = -> [{title: 'Do this'}, {title: 'And do that'}]
+          template.withArgs(title: 'Do this'    ).returns '<li>Do this</li>'
+          template.withArgs(title: 'And do that').returns '<li>And do that</li>'
+          view.render()
+          expect(view.$el).to.contain.$html '<li>Do this</li>'
+                      .and.to.contain.$html '<li>And do that</li>'
+
+        it 'updates each content element respectively', ->
+          view.data = -> [{header: 'Tasks'}, {title: 'And do that'}]
+          template.withArgs(header: 'Tasks'     ).returns 'Tasks'
+          template.withArgs(title: 'And do that').returns '<li>Do this</li>'
+          view.$el.html '<h3></h3><ul></ul>'
+          view.content = -> @$ 'h3,ul'
+          view.render()
+          expect(view.$el).to.contain.$html '<h3>Tasks</h3>'
+                      .and.to.contain.$html '<ul><li>Do this</li></ul>'
+
