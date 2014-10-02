@@ -1,6 +1,7 @@
-chai      = require 'chai'
-sinon     = require 'sinon'
-sinonChai = require 'sinon-chai'
+chai       = require 'chai'
+sinon      = require 'sinon'
+sinonChai  = require 'sinon-chai'
+jqueryChai = require 'chai-jq'
 
 jquery     = require 'jquery'
 underscore = require 'underscore'
@@ -8,6 +9,7 @@ backbone   = require 'backbone'
 
 window.expect = chai.expect
 chai.use sinonChai
+chai.use jqueryChai
 
 window._ = underscore
 

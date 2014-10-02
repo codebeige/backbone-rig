@@ -2,8 +2,11 @@
 
 class View extends Backbone.View
 
-  initialize: (options = {}) ->
-    _(@).extend _(options).pick 'template', 'data'
+  markup: ->
+    ''
+
+  content: ->
+    @$el
 
   template: ->
     ''
@@ -11,8 +14,16 @@ class View extends Backbone.View
   data: ->
     {}
 
+  initialize: (options = {}) ->
+    _(@).extend _(options).pick 'template', 'data'
+
+  setElement: (el, delegate) ->
+    super
+    @$el.html @markup()
+    @
+
   render: ->
-    @$el.html @template @data()
+    @content().html @template @data()
     @
 
 module.exports = View

@@ -27,6 +27,31 @@ describe 'Rig.View', ->
     it 'is a Backbone view', ->
       expect(view).to.be.an.instanceOf Backbone.View
 
+    describe '#setElement()', ->
+
+      el = null
+
+      createEl = ->
+        $('<div>')[0]
+
+      beforeEach ->
+        el = createEl()
+
+      it 'can be chained', ->
+        result = view.setElement el
+        expect(result).to.equal view
+
+      it 'calls super implementation', ->
+        original = @spy Backbone.View::, 'setElement'
+        view.setElement el, false
+        expect(original).to.have.been.calledOnce
+        expect(original).to.have.been.calledWith el, false
+
+      it 'creates markup inside el', ->
+        view.markup = -> '<ul></ul>'
+        view.setElement view.el
+        expect(view.$el).to.have.$html '<ul></ul>'
+
     describe '#render()', ->
 
       template = null
@@ -34,9 +59,6 @@ describe 'Rig.View', ->
       beforeEach ->
         template = @stub()
         view.template = template
-
-      content = (view) ->
-        view.$el.html()
 
       it 'can be chained', ->
         result = view.render()
@@ -46,9 +68,16 @@ describe 'Rig.View', ->
         view.$el.html 'I feel deprecated.'
         template.returns 'YES, you are rigged!'
         view.render()
-        expect(content view).to.equal 'YES, you are rigged!'
+        expect(view.$el).to.have.$html 'YES, you are rigged!'
 
       it 'passes data to template', ->
         view.data = -> foo: 'bar'
         view.render()
         expect(template).to.have.been.calledWith foo: 'bar'
+
+      it 'updates provided content element', ->
+        ul = $ '<ul>'
+        view.content = -> ul
+        template.returns '<li>Do something</li>'
+        view.render()
+        expect(ul).to.have.$html '<li>Do something</li>'
