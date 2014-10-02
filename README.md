@@ -46,7 +46,7 @@ event hub.
 
 ## Rendering views
 
-Extending ´Rig.View´ provides sensible defaults for updating the content by
+Extending `Rig.View` provides sensible defaults for updating the content by
 rendering a `template` from serialized `data`.
 
     class TaskView extends Rig.View
@@ -86,7 +86,7 @@ update the defined `content`. It is also possible to render a list of elements.
 ## Routes
 
 Configure your routes using an expressive and flexible syntax. For maximum
-compatibility with ´Backbone.Router´ the standard hash map style is also
+compatibility with `Backbone.Router` the standard hash map style is also
 supported.
 
     class TasksRouter extends Rig.Router
