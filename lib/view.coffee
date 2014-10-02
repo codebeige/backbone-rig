@@ -1,9 +1,15 @@
 'use strict'
 
+list = (value) ->
+  if _.isArray(value) then value else [ value ]
+
 class View extends Backbone.View
 
-  initialize: (options = {}) ->
-    _(@).extend _(options).pick 'template', 'data'
+  markup: ->
+    ''
+
+  content: ->
+    @$el
 
   template: ->
     ''
@@ -11,8 +17,22 @@ class View extends Backbone.View
   data: ->
     {}
 
+  initialize: (options = {}) ->
+    _(@).extend _(options).pick 'template', 'data'
+
+  setElement: (el, delegate) ->
+    super
+    @$el.html @markup()
+    @
+
   render: ->
-    @$el.html @template @data()
+    data   = list @data()
+    chunks = _(data).map @template
+    $els   = $ @content()
+    if $els.length is 1
+      $els.html chunks.join "\n"
+    else
+      $els.html (i) -> chunks[i]
     @
 
 module.exports = View
