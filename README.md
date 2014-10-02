@@ -39,7 +39,7 @@ A shared config object ist passed to all initializer calls.
     app.start container: $('#my-app')
 
 
-´Rig.Application´ extends ´Backbone.Events´ so that it can be used as a central
+`Rig.Application` extends `Backbone.Events` so that it can be used as a central
 event hub.
 
 
@@ -47,7 +47,7 @@ event hub.
 ## Rendering views
 
 Extending ´Rig.View´ provides sensible defaults for updating the content by
-rendering a `template` from serialzed `data`.
+rendering a `template` from serialized `data`.
 
     class TaskView extends Rig.View
 

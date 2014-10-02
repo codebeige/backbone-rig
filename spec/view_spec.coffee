@@ -93,9 +93,9 @@ describe 'Rig.View', ->
                       .and.to.contain.$html '<li>And do that</li>'
 
         it 'updates each content element respectively', ->
-          view.data = -> [{header: 'Tasks'}, {title: 'And do that'}]
+          view.data = -> [{header: 'Tasks'}, {title: 'Do this'}]
           template.withArgs(header: 'Tasks'     ).returns 'Tasks'
-          template.withArgs(title: 'And do that').returns '<li>Do this</li>'
+          template.withArgs(title: 'Do this').returns '<li>Do this</li>'
           view.$el.html '<h3></h3><ul></ul>'
           view.content = -> @$ 'h3,ul'
           view.render()
