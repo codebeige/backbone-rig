@@ -1,6 +1,6 @@
 {
   "name": "backbone-rig",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Rig your Backbone applications.",
   "main": "build/backbone-rig.js",
   "scripts": {
