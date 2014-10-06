@@ -2,10 +2,8 @@
   "name": "backbone-rig",
   "version": "0.0.1",
   "description": "Rig your Backbone applications.",
-  "main": "build/backbone-rig.js",
   "scripts": {
-    "test": "browserify -p [ mocaccino -R dot ] --extension=.coffee spec | phantomic --brout",
-    "prepublish": "gulp build"
+    "test": "browserify -p [ mocaccino -R dot ] --extension=.coffee spec | phantomic --brout"
   },
   "keywords": [
     "backbone",

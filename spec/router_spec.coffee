@@ -1,7 +1,7 @@
 'use strict'
-require 'spec/support'
+require './spec_helper'
 
-Router = require 'lib/router'
+Router = require '../lib/router'
 
 describe 'Rig.Router', ->
 

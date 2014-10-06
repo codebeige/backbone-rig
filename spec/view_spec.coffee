@@ -1,7 +1,7 @@
 'use strict'
-require 'spec/support'
+require './spec_helper'
 
-View = require 'lib/view'
+View = require '../lib/view'
 
 describe 'Rig.View', ->
 
