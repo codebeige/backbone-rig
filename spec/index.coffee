@@ -1,4 +1,4 @@
-require 'spec/rig_spec'
-require 'spec/application_spec'
-require 'spec/view_spec'
-require 'spec/router_spec'
+require './rig_spec'
+require './application_spec'
+require './view_spec'
+require './router_spec'

@@ -1,7 +1,7 @@
 'use strict'
-require 'spec/support'
+require './spec_helper'
 
-Application = require 'lib/application'
+Application = require '../lib/application'
 
 describe 'Rig.Application', ->
 

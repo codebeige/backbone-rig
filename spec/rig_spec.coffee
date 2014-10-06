@@ -1,11 +1,11 @@
 'use strict'
-require 'spec/support'
+require './spec_helper'
 
-Rig = require 'lib/rig'
+Rig = require '../lib/rig'
 
-Application = require 'lib/application'
-View        = require 'lib/view'
-Router      = require 'lib/router'
+Application = require '../lib/application'
+View        = require '../lib/view'
+Router      = require '../lib/router'
 
 describe 'Rig', ->
 
