@@ -1,6 +1,6 @@
 {
   "name": "backbone-rig",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Rig your Backbone applications.",
   "scripts": {
     "test": "browserify -p [ mocaccino -R dot ] --extension=.coffee spec | phantomic --brout"
@@ -19,6 +19,7 @@
     "type": "git",
     "url": "https://github.com/codebeige/backbone-rig.git"
   },
+  "main": "./lib",
   "browserify": {
     "transform": [
       "coffeeify"
