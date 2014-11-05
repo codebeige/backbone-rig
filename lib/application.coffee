@@ -15,6 +15,8 @@ lift = (initializer) ->
 
 class Application
 
+  @when: $.when
+
   _(@::).extend Backbone.Events
 
   config: null
@@ -31,7 +33,7 @@ class Application
 
   start: (config) ->
     $.extend true, @config, config
-    $.when @_inits...
+    Application.when @_inits...
       .then => @_start.resolve @config, @
     @
 

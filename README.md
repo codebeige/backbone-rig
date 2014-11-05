@@ -4,9 +4,17 @@ Rig your Backbone applications.
 
 ## Dependencies and Usage
 
-*Rig* extends the functionality of *Backbone* by extending `Backbone.iew` and
+*Rig* extends the functionality of *Backbone* by extending `Backbone.View` and
 `Backbone.Router`. Load the library into your project after *Backbone* is
 available and extend from the corresponding *Rig* base classes.
+
+By default *Rig* uses `jQuery.then` for deferring start on initialization. In
+order to use a different implementation for handling the promises replace
+`Rig.Application.when` with another implementation like this:
+
+    // use a promise A+ compatible implementation like cujojs/when
+    Rig.Application.when = when.join
+
 
 
 

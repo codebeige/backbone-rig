@@ -128,6 +128,11 @@ describe 'Rig.Application', ->
           application.start()
           expect(initializer).to.not.have.been.called
 
+        it 'leverages configured defer machanism', ->
+          Application.when = -> then: (resolve) -> resolve()
+          application.start()
+          expect(initializer).to.have.been.calledOnce
+
     describe 'events', ->
 
       callback = null

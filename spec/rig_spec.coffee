@@ -1,7 +1,7 @@
 'use strict'
 require './spec_helper'
 
-Rig = require '../lib/rig'
+Rig = require '../lib'
 
 Application = require '../lib/application'
 View        = require '../lib/view'

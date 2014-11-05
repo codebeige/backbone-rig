@@ -18,7 +18,7 @@ gulp.task 'clobber', ['clean'], (done) ->
 
 gulp.task 'build', ->
   browserify
-    entries: ['./lib/rig.coffee']
+    entries: ['./lib/index.coffee']
     extensions: ['.coffee']
     standalone: 'Rig'
   .bundle()
