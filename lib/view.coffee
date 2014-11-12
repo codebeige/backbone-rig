@@ -26,13 +26,16 @@ class View extends Backbone.View
     @
 
   render: ->
-    data   = list @data()
-    chunks = _(data).map @template
+    data   = @data()
+    chunks = _(list data).map @template
     $els   = $ @content()
     if $els.length is 1
       $els.html chunks.join "\n"
     else
       $els.html (i) -> chunks[i]
+    @update data
     @
+
+  update: (data) ->
 
 module.exports = View

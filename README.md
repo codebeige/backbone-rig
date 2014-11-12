@@ -90,6 +90,25 @@ update the defined `content`. It is also possible to render a list of elements.
         @$ 'ul'
 
 
+If an `update` method is defined it will be called after each call to `render`.
+This is useful for updating e.g. visibility of content dependent on the actual
+state:
+
+    class EditTaskView extends Rig.View
+
+      initalize: (@roles) ->
+
+      template: (data) ->
+        _.template '<li><%- title %> <span class="delete">-</span></li>', data
+
+      data: ->
+        title: @model.escape 'title'
+        canDelete: 'manager' in @roles
+
+      update: (data) ->
+        @$('.delete').hide() unless data.canDelete
+
+
 # TODO (not yet implemented)
 
 ## Routes
