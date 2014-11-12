@@ -82,6 +82,19 @@ describe 'Rig.View', ->
         view.render()
         expect(ul).to.have.$html '<li>Do something</li>'
 
+      it 'calls update after content was rendered', ->
+        view.template = -> '<p>before</p>'
+        view.update = -> @$('p').html 'after'
+        view.render()
+        expect(view.$el).to.have.$html '<p>after</p>'
+
+      it 'passes data to update call', ->
+        update = @spy()
+        view.update = update
+        view.data = -> foo: 'bar'
+        view.render()
+        expect(update).to.have.been.calledWith foo: 'bar'
+
       context 'updates on multiple items', ->
 
         it 'renders template for every item in data', ->
@@ -102,3 +115,8 @@ describe 'Rig.View', ->
           expect(view.$el).to.contain.$html '<h3>Tasks</h3>'
                       .and.to.contain.$html '<ul><li>Do this</li></ul>'
 
+        it 'calls update only once', ->
+          update = @spy()
+          view.update = update
+          view.render()
+          expect(update).to.have.been.calledOnce
