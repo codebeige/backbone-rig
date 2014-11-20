@@ -17,7 +17,6 @@ order to use a different implementation for handling the promises replace
 
 
 
-
 ## Application startup
 
 Bootstrap different parts of your application independetly by registering
@@ -88,6 +87,85 @@ update the defined `content`. It is also possible to render a list of elements.
 
       content: ->
         @$ 'ul'
+
+
+
+## Workflows
+
+A *Workflow* manages a sequence of steps and transitions that build up a
+discrete entitiy of the application flow:
+
+    class LoginSteps extends Rig.Workflow
+
+      initial: 'login'
+
+      transitions: [
+        { name: 'submit', from: ['login', 'error'], to: 'pending' }
+        { name: 'cancel', from: 'error'           , to: 'exit'    }
+        { name: 'fail'  , from: 'pending'         , to: 'error'   }
+        { name: 'done'  , from: 'pending'         , to: 'exit'    }
+      ]
+
+      steps:
+        'login':
+          enter: ->
+            @view.on 'submit', @submit, @
+          exit: ->
+            @view.off 'submit'
+        'pending':
+          enter: ->
+            @view
+              .on 'success', @done, @
+              .on 'error'  , @fail, @
+              .disableForm()
+          exit: ->
+            @view
+              .off 'success'
+              .off 'error'
+              .enableForm()
+        'error':
+          enter: (msg) ->
+            @view
+              .on 'submit', @submit, @
+              .on 'cancel', @cancel, @
+              .displayError msg
+          exit: ->
+            @view
+              .off 'submit cancel'
+              .clearErrors()
+        'exit':
+          enter: ->
+            @view
+              .off()
+              .remove()
+            @trigger 'login:exit'
+
+      initialize: (@el) ->
+        @view = new LoginForm
+          .render()
+          .appendTo $(@el)
+
+
+When calling a transition with any arguments these are forwarded to the `enter`
+callback:
+
+    login = new LoginSteps($ 'body')
+    login.error 'Could not login'
+
+
+Additionally a series of events will be triggered to allow hooking into the
+flow at several stages. All callbacks receive the transition as its first
+argument followed by any additional arguments from the transition call:
+
++ `transition:before`
++ `transition:before:fail`
++ `step:exit`
++ `step:exit:pending`
++ `step:enter:error`
++ `step:enter`
++ `transition:after:fail`
++ `transition:after`
+
 
 
 # TODO (not yet implemented)
