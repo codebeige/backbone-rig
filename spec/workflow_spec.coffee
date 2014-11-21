@@ -20,6 +20,11 @@ describe 'Rig.Workflow', ->
         workflow.transitions = [ name: 'turnOn', from: 'off', to: 'on' ]
         workflow.createTransitions()
 
+      it 'changes state', ->
+        workflow.currentStep = 'off'
+        workflow.turnOn()
+        expect(workflow).to.have.property 'currentStep', 'on'
+
       context 'exit callback', ->
 
         exit = null
