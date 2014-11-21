@@ -3,4 +3,4 @@
 module.exports =
   Application: require './application'
   View:        require './view'
-  Router:      require './router'
+  Workflow:    require './workflow'
