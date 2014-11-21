@@ -8,7 +8,6 @@ describe 'Rig.Workflow', ->
   context 'constructor', ->
 
     context 'options', ->
-
       it 'assigns initial step', ->
         workflow = new Workflow initialStep: 'off'
         expect(workflow).to.have.property 'initialStep', 'off'
@@ -26,6 +25,45 @@ describe 'Rig.Workflow', ->
         workflow = new Workflow steps: 'off': enter: null
         expect(workflow).to.have.property 'steps'
                                 .that.eql 'off': enter: null
+
+      it 'assigns initialize method', ->
+        initialize = ->
+        workflow = new Workflow initialize: initialize
+        expect(workflow).to.have.property 'initialize', initialize
+
+    context 'initial state', ->
+      it 'sets initial state', ->
+        workflow = new Workflow initialStep: 'off'
+        expect(workflow).to.have.property 'currentStep', 'off'
+
+      it 'triggers enter callback', ->
+        enter = @spy()
+        workflow = new Workflow
+          initialStep: 'off'
+          steps: 'off': enter: enter
+        expect(enter).to.have.been.calledOnce
+
+    context 'initialize', ->
+      initialize = null
+
+      beforeEach ->
+        initialize = @spy()
+
+      it 'calls initialize method', ->
+        workflow = new Workflow initialize: initialize
+        expect(initialize).to.have.been.calledOnce
+
+      it 'forwards constructor options', ->
+        workflow = new Workflow initialize: initialize
+        expect(initialize).to.have.been.calledWith initialize: initialize
+
+      it 'calls initialize method before enter callback', ->
+        enter = @spy()
+        workflow = new Workflow
+          initialStep: 'off'
+          initialize: initialize
+          steps: 'off', enter: enter
+        expect(initialize).to.have.been.calledBefore enter
 
   context 'instance', ->
     workflow = null
