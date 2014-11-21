@@ -97,7 +97,7 @@ discrete entitiy of the application flow:
 
     class LoginSteps extends Rig.Workflow
 
-      initial: 'login'
+      initialStep: 'login'
 
       transitions: [
         { name: 'submit', from: ['login', 'error'], to: 'pending' }
@@ -105,6 +105,11 @@ discrete entitiy of the application flow:
         { name: 'fail'  , from: 'pending'         , to: 'error'   }
         { name: 'done'  , from: 'pending'         , to: 'exit'    }
       ]
+
+      initialize: (@el) ->
+        @view = new LoginForm
+          .render()
+          .appendTo $(@el)
 
       steps:
         'login':
@@ -139,11 +144,6 @@ discrete entitiy of the application flow:
               .off()
               .remove()
             @trigger 'login:exit'
-
-      initialize: (@el) ->
-        @view = new LoginForm
-          .render()
-          .appendTo $(@el)
 
 
 When calling a transition with any arguments these are forwarded to the `enter`

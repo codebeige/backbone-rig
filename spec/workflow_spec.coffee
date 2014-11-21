@@ -7,6 +7,25 @@ describe 'Rig.Workflow', ->
 
   context 'constructor', ->
 
+    context 'options', ->
+
+      it 'assigns initial step', ->
+        workflow = new Workflow initialStep: 'off'
+        expect(workflow).to.have.property 'initialStep', 'off'
+
+      it 'assigns transitions', ->
+        workflow = new Workflow transitions: [
+          name: 'turnOn', from: 'off', to: 'on'
+        ]
+        expect(workflow).to.have.property 'transitions'
+                                .that.eql [
+          name: 'turnOn', from: 'off', to: 'on'
+        ]
+
+      it 'assigns steps', ->
+        workflow = new Workflow steps: 'off': enter: null
+        expect(workflow).to.have.property 'steps'
+                                .that.eql 'off': enter: null
 
   context 'instance', ->
     workflow = null

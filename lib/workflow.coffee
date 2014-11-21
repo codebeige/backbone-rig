@@ -5,6 +5,8 @@ module.exports = class Workflow
 
   currentStep: null
 
+  constructor: ({@initialStep, @transitions, @steps} = {}) ->
+
   createTransitions: ->
     _(@transitions).each (t) =>
       @[t.name] = (args...) ->
