@@ -157,8 +157,8 @@ Additionally a series of events will be triggered to allow hooking into the
 flow at several stages. All callbacks receive the transition as its first
 argument followed by any additional arguments from the transition call:
 
-+ `transition:before:fail`
 + `transition:before`
++ `transition:before:fail`
 + `step:exit:pending`
 + `step:exit`
 + `step:enter:error`

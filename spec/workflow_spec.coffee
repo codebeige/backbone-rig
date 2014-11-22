@@ -4,9 +4,7 @@ require './spec_helper'
 Workflow = require '../lib/workflow'
 
 describe 'Rig.Workflow', ->
-
   context 'constructor', ->
-
     context 'options', ->
       it 'assigns initial step', ->
         workflow = new Workflow initialStep: 'off'
@@ -79,10 +77,12 @@ describe 'Rig.Workflow', ->
     beforeEach ->
       workflow = new Workflow
 
-    describe 'transitions', ->
+    describe 'transition', ->
+      transition = null
 
       beforeEach ->
-        workflow.transitions = [ name: 'turnOn', from: 'off', to: 'on' ]
+        transition = name: 'turnOn', from: 'off', to: 'on'
+        workflow.transitions = [transition]
         workflow.createTransitions()
 
       it 'changes state', ->
@@ -90,218 +90,123 @@ describe 'Rig.Workflow', ->
         workflow.turnOn()
         expect(workflow).to.have.property 'currentStep', 'on'
 
-      context 'exit callback', ->
-
-        exit = null
-
-        beforeEach ->
-          exit = @spy()
-          workflow.steps = 'off': exit: exit
-
-        it 'is triggered', ->
-          workflow.turnOn()
-          expect(exit).to.have.been.calledOnce
-
-        it 'is called on workflow instance', ->
-          workflow.turnOn()
-          expect(exit).to.have.been.calledOn workflow
-
-        it 'is called with arguments from transition', ->
-          workflow.turnOn fast: yes
-          expect(exit).to.have.been.calledWith fast: yes
-
-      context 'enter callback', ->
-
-        enter = null
+      context 'callbacks', ->
+        callback = null
 
         beforeEach ->
-          enter = @spy()
-          workflow.steps = 'on': enter: enter
+          callback = @spy()
 
-        it 'is triggered', ->
-          workflow.turnOn()
-          expect(enter).to.have.been.calledOnce
-
-        it 'is called on workflow instance', ->
-          workflow.turnOn()
-          expect(enter).to.have.been.calledOn workflow
-
-        it 'is called with arguments from transition', ->
-          workflow.turnOn fast: yes
-          expect(enter).to.have.been.calledWith fast: yes
-
-    describe 'events', ->
-
-      callback = null
-
-      beforeEach ->
-        callback = @spy()
-
-      it 'can broadcast events', ->
-        workflow.on 'bingo', callback
-        workflow.trigger 'bingo'
-        expect(callback).to.have.been.calledOnce
-
-      context 'transition', ->
-
-        transition = null
-
-        beforeEach ->
-          transition = name: 'turnOn', from: 'off', to: 'on'
-          workflow.transitions = [transition]
-          workflow.createTransitions()
-
-        context 'transition:before:name', ->
-
-          beforeEach ->
-            workflow.on 'transition:before:turnOn', callback
-
-          it 'is triggered once', ->
+        callbackExamples = ->
+          it 'is triggered', ->
             workflow.turnOn()
             expect(callback).to.have.been.calledOnce
 
+          it 'is called on workflow instance', ->
+            workflow.turnOn()
+            expect(callback).to.have.been.calledOn workflow
+
+          it 'is called with arguments from transition', ->
+            workflow.turnOn fast: yes
+            expect(callback).to.have.been.calledWith fast: yes
+
+        context 'exit callback', ->
+          beforeEach ->
+            workflow.steps = 'off': exit: callback
+
+          callbackExamples()
+
+        context 'enter callback', ->
+          beforeEach ->
+            workflow.steps = 'on': enter: callback
+
+          callbackExamples()
+
+      context 'hooks', ->
+        hook = null
+
+        beforeEach ->
+          hook = @spy()
+
+        hookExamples = ->
+          it 'is triggered once', ->
+            workflow.turnOn()
+            expect(hook).to.have.been.calledOnce
+
           it 'passes transition and arguments to callback', ->
             workflow.turnOn foo: 'bar'
-            expect(callback).to.have.been.calledWith transition, foo: 'bar'
-
-          it 'is triggered before general event', ->
-            general = @spy()
-            workflow.on 'transition:before:turnOn', general
-            workflow.turnOn()
-            expect(callback).to.have.been.calledBefore general
+            expect(hook).to.have.been.calledWith transition, foo: 'bar'
 
         context 'transition:before', ->
-
           beforeEach ->
-            workflow.on 'transition:before', callback
+            workflow.on 'transition:before', hook
 
-          it 'is triggered once', ->
-            workflow.turnOn()
-            expect(callback).to.have.been.calledOnce
+          hookExamples()
 
-          it 'passes transition and arguments to callback', ->
-            workflow.turnOn foo: 'bar'
-            expect(callback).to.have.been.calledWith transition, foo: 'bar'
+        context 'transition:before:name', ->
+          beforeEach ->
+            workflow.on 'transition:before:turnOn', hook
 
-          it 'is triggered before exit callback', ->
-            exit = @spy()
-            workflow.steps = 'off': exit: exit
-            workflow.turnOn()
-            expect(callback).to.have.been.calledBefore exit
-
+          hookExamples()
 
         context 'step:exit:name', ->
-
           beforeEach ->
-            workflow.on 'step:exit:off', callback
+            workflow.on 'step:exit:off', hook
 
-          it 'is triggered once', ->
-            workflow.turnOn()
-            expect(callback).to.have.been.calledOnce
-
-          it 'passes transition and arguments to callback', ->
-            workflow.turnOn foo: 'bar'
-            expect(callback).to.have.been.calledWith transition, foo: 'bar'
-
-          it 'is triggered after exit callback', ->
-            exit = @spy()
-            workflow.steps = 'off': exit: exit
-            workflow.turnOn()
-            expect(callback).to.have.been.calledAfter exit
+          hookExamples()
 
         context 'step:exit', ->
-
           beforeEach ->
-            workflow.on 'step:exit', callback
+            workflow.on 'step:exit', hook
 
-          it 'is triggered once', ->
-            workflow.turnOn()
-            expect(callback).to.have.been.calledOnce
-
-          it 'passes transition and arguments to callback', ->
-            workflow.turnOn foo: 'bar'
-            expect(callback).to.have.been.calledWith transition, foo: 'bar'
-
-          it 'is triggered after specific event', ->
-            specific = @spy()
-            workflow.on 'step:exit:off', specific
-            workflow.turnOn()
-            expect(callback).to.have.been.calledAfter specific
+          hookExamples()
 
         context 'step:enter:name', ->
-
           beforeEach ->
-            workflow.on 'step:enter:on', callback
+            workflow.on 'step:enter:on', hook
 
-          it 'is triggered once', ->
-            workflow.turnOn()
-            expect(callback).to.have.been.calledOnce
-
-          it 'passes transition and arguments to callback', ->
-            workflow.turnOn foo: 'bar'
-            expect(callback).to.have.been.calledWith transition, foo: 'bar'
-
-          it 'is triggered after enter callback', ->
-            enter = @spy()
-            workflow.steps = 'on': enter: enter
-            workflow.turnOn()
-            expect(callback).to.have.been.calledAfter enter
+          hookExamples()
 
         context 'step:enter', ->
-
           beforeEach ->
-            workflow.on 'step:enter', callback
+            workflow.on 'step:enter', hook
 
-          it 'is triggered once', ->
-            workflow.turnOn()
-            expect(callback).to.have.been.calledOnce
-
-          it 'passes transition and arguments to callback', ->
-            workflow.turnOn foo: 'bar'
-            expect(callback).to.have.been.calledWith transition, foo: 'bar'
-
-          it 'is triggered after specific callback', ->
-            specific = @spy()
-            workflow.on 'step:enter:on', specific
-            workflow.turnOn()
-            expect(callback).to.have.been.calledAfter specific
+          hookExamples()
 
         context 'transition:after:name', ->
-
           beforeEach ->
-            workflow.on 'transition:after:turnOn', callback
+            workflow.on 'transition:after:turnOn', hook
 
-          it 'is triggered once', ->
-            workflow.turnOn()
-            expect(callback).to.have.been.calledOnce
-
-          it 'passes transition and arguments to callback', ->
-            workflow.turnOn foo: 'bar'
-            expect(callback).to.have.been.calledWith transition, foo: 'bar'
-
-          it 'is triggered after step events', ->
-            enter = @spy()
-            workflow.on 'step:enter', enter
-            workflow.turnOn()
-            expect(callback).to.have.been.calledAfter enter
+          hookExamples()
 
         context 'transition:after', ->
-
           beforeEach ->
-            workflow.on 'transition:after', callback
+            workflow.on 'transition:after', hook
 
-          it 'is triggered once', ->
-            workflow.turnOn()
-            expect(callback).to.have.been.calledOnce
+          hookExamples()
 
-          it 'passes transition and arguments to callback', ->
-            workflow.turnOn foo: 'bar'
-            expect(callback).to.have.been.calledWith transition, foo: 'bar'
+      context 'order', ->
+        calls = null
 
-          it 'is triggered after specific event', ->
-            specific = @spy()
-            workflow.on 'transition:after:turnOn', specific
-            workflow.turnOn()
-            expect(callback).to.have.been.calledAfter specific
+        beforeEach ->
+          calls = []
+          workflow.steps =
+            'off':
+              exit: -> calls.push 'exit()'
+            'on':
+              enter: -> calls.push 'enter()'
+          workflow.on 'all', (event) -> calls.push event
 
-
+        it 'calls hooks and callbacks in a specific order', ->
+          workflow.turnOn()
+          expect(calls).to.eql [
+            'transition:before'
+            'transition:before:turnOn'
+            'exit()'
+            'step:exit:off'
+            'step:exit'
+            'enter()'
+            'step:enter:on'
+            'step:enter'
+            'transition:after:turnOn'
+            'transition:after'
+          ]
