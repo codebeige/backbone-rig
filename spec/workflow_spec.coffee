@@ -76,6 +76,48 @@ describe 'Rig.Workflow', ->
 
     beforeEach ->
       workflow = new Workflow
+      workflow.currentStep = 'off'
+
+    describe '#at()', ->
+      it 'returns true when current step', ->
+        workflow.currentStep = 'off'
+        result = workflow.at 'off'
+        expect(result).to.be.true
+
+      it 'returns false when not current step', ->
+        workflow.currentStep = 'off'
+        result = workflow.at 'on'
+        expect(result).to.be.false
+
+    describe '#can()', ->
+      it 'returns true when transition can be applied', ->
+        workflow.transitions = [name: 'turnOn', from: 'off', to: 'on']
+        workflow.currentStep = 'off'
+        result = workflow.can 'turnOn'
+        expect(result).to.be.true
+
+      it 'returns false when transition cannot be applied', ->
+        workflow.transitions = [name: 'turnOn', from: 'off', to: 'on']
+        workflow.currentStep = 'on'
+        result = workflow.can 'turnOn'
+        expect(result).to.be.false
+
+      it 'handles multiple allowed states', ->
+        workflow.transitions = [
+          name: 'turnOn', from: ['idle', 'off'], to: 'on'
+        ]
+        workflow.currentStep = 'off'
+        result = workflow.can 'turnOn'
+        expect(result).to.be.true
+
+      it 'handles multiple transitions of same name', ->
+        workflow.transitions = [
+          { name: 'turnOn', from: 'off', to: 'idle' }
+          { name: 'turnOn', from: 'idle', to: 'on'  }
+        ]
+        workflow.currentStep = 'idle'
+        result = workflow.can 'turnOn'
+        expect(result).to.be.true
 
     describe 'transition', ->
       transition = null
@@ -89,6 +131,10 @@ describe 'Rig.Workflow', ->
         workflow.currentStep = 'off'
         workflow.turnOn()
         expect(workflow).to.have.property 'currentStep', 'on'
+
+      it 'raises error if not applicable', ->
+        workflow.can = -> false
+        expect(workflow.turnOn).to.throw Error
 
       context 'callbacks', ->
         callback = null
