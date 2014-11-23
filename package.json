@@ -1,6 +1,6 @@
 {
   "name": "backbone-rig",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Rig your Backbone applications.",
   "scripts": {
     "test": "browserify -p [ mocaccino -R dot ] --extension=.coffee spec | phantomic --brout"
@@ -11,7 +11,13 @@
     "app",
     "initializer",
     "path helpers",
-    "routes"
+    "routes",
+    "workflow",
+    "flow",
+    "state machine",
+    "render",
+    "update",
+    "collection"
   ],
   "author": "Tibor Claassen",
   "license": "MIT",
