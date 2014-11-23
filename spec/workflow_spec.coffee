@@ -187,26 +187,61 @@ describe 'Rig.Workflow', ->
       context 'order', ->
         calls = null
 
+        logger = (event) ->
+          -> calls.push event
+
+        watch = (events...) ->
+          _(events).each (event) ->
+            workflow.on event, logger(event)
+
         beforeEach ->
           calls = []
           workflow.steps =
             'off':
-              exit: -> calls.push 'exit()'
+              exit: logger 'exit()'
             'on':
-              enter: -> calls.push 'enter()'
-          workflow.on 'all', (event) -> calls.push event
+              enter: logger 'enter()'
 
-        it 'calls hooks and callbacks in a specific order', ->
+        it 'wraps general transition hooks around callbacks', ->
+          watch 'transition:before'
+              , 'transition:after'
           workflow.turnOn()
           expect(calls).to.eql [
             'transition:before'
+            'exit()'
+            'enter()'
+            'transition:after'
+          ]
+
+        it 'wraps transition specific hooks around callbacks', ->
+          watch 'transition:before:turnOn'
+              , 'transition:after:turnOn'
+          workflow.turnOn()
+          expect(calls).to.eql [
             'transition:before:turnOn'
             'exit()'
-            'step:exit:off'
+            'enter()'
+            'transition:after:turnOn'
+          ]
+
+        it 'triggers general step hooks after callbacks', ->
+          watch 'step:exit'
+              , 'step:enter'
+          workflow.turnOn()
+          expect(calls).to.eql [
+            'exit()'
             'step:exit'
             'enter()'
-            'step:enter:on'
             'step:enter'
-            'transition:after:turnOn'
-            'transition:after'
+          ]
+
+        it 'triggers step specific hooks after callbacks', ->
+          watch 'step:exit:off'
+              , 'step:enter:on'
+          workflow.turnOn()
+          expect(calls).to.eql [
+            'exit()'
+            'step:exit:off'
+            'enter()'
+            'step:enter:on'
           ]
