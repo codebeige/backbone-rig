@@ -22,16 +22,18 @@ triggerEvents = (hub, type, name, args...) ->
   hub.trigger "#{type}:#{name}", args...
   hub.trigger type, args...
 
+findTransition = (transitions, name, from) ->
+  _(transitions).find (transition) ->
+    transition.name is name and from in [].concat(transition.from)
+
 errorMessage = (name, step) ->
   "Transition '#{name}' not allowed from '#{step}'"
 
 transition = (t, args...) ->
-  throw new Error(errorMessage t.name, @currentStep) unless @can t.name
-
   trigger = _(triggerEvents).partial @, _, _, t, args...
   trigger 'transition:before', t.name
-  step(@steps, t.from).exit.apply @, args
-  trigger 'step:exit', t.from
+  step(@steps, @currentStep).exit.apply @, args
+  trigger 'step:exit', @currentStep
   @currentStep = t.to
   step(@steps, t.to).enter.apply @, args
   trigger 'step:enter', t.to
@@ -58,17 +60,19 @@ class Workflow
     step(@steps, @currentStep).enter.call @, opts
 
   createTransitions: ->
-    _(@transitions).each (t) =>
-      @[t.name] = _(transition).bind @, t
+    _.chain(@transitions)
+      .pluck 'name'
+      .uniq()
+      .each (name) =>
+        @[name] = (args...) ->
+          unless t = findTransition @transitions, name, @currentStep
+            throw new Error(errorMessage name, @currentStep)
+          transition.call @, t, args...
 
   at: (step) ->
     @currentStep is step
 
   can: (transition) ->
-    @currentStep in _.chain(@transitions)
-      .where name: transition
-      .pluck 'from'
-      .flatten()
-      .value()
+    findTransition(@transitions, transition, @currentStep)?
 
 module.exports = Workflow

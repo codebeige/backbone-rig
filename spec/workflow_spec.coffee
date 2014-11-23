@@ -136,6 +136,24 @@ describe 'Rig.Workflow', ->
         workflow.can = -> false
         expect(workflow.turnOn).to.throw Error
 
+      it 'handles multiple from states', ->
+        workflow.transitions = [
+          name: 'turnOn', from: ['idle', 'off'], to: 'on'
+        ]
+        workflow.createTransitions()
+        workflow.turnOn()
+        expect(workflow).to.have.property 'currentStep', 'on'
+
+      it 'handles multiple from states', ->
+        workflow.transitions = [
+          { name: 'turnOn', from: 'idle', to: 'on'  }
+          { name: 'turnOn', from: 'off', to: 'idle' }
+        ]
+        workflow.createTransitions()
+        workflow.currentStep = 'idle'
+        workflow.turnOn()
+        expect(workflow).to.have.property 'currentStep', 'on'
+
       context 'callbacks', ->
         callback = null
 
@@ -160,6 +178,14 @@ describe 'Rig.Workflow', ->
             workflow.steps = 'off': exit: callback
 
           callbackExamples()
+
+          it 'handles multiple from states', ->
+            workflow.transitions = [
+              name: 'turnOn', from: ['idle', 'off'], to: 'on'
+            ]
+            workflow.createTransitions()
+            workflow.turnOn()
+            expect(callback).to.have.been.calledOnce
 
         context 'enter callback', ->
           beforeEach ->
@@ -199,6 +225,14 @@ describe 'Rig.Workflow', ->
             workflow.on 'step:exit:off', hook
 
           hookExamples()
+
+          it 'handles multiple from states', ->
+            workflow.transitions = [
+              name: 'turnOn', from: ['idle', 'off'], to: 'on'
+            ]
+            workflow.createTransitions()
+            workflow.turnOn()
+            expect(hook).to.have.been.calledOnce
 
         context 'step:exit', ->
           beforeEach ->
