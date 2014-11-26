@@ -5,7 +5,7 @@ Rig = require '../lib'
 
 Application = require '../lib/application'
 View        = require '../lib/view'
-Router      = require '../lib/router'
+Workflow    = require '../lib/workflow'
 
 describe 'Rig', ->
 
@@ -15,5 +15,5 @@ describe 'Rig', ->
   it 'provides a reference to the view base class', ->
     expect(Rig).to.have.property 'View', View
 
-  it 'provides a reference to the router base class', ->
-    expect(Rig).to.have.property 'Router', Router
+  it 'provides a reference to the workflow base class', ->
+    expect(Rig).to.have.property 'Workflow', Workflow
