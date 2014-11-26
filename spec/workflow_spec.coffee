@@ -5,6 +5,11 @@ Workflow = require '../lib/workflow'
 
 describe 'Rig.Workflow', ->
   context 'constructor', ->
+    it 'creates transitions', ->
+      workflow = new Workflow transitions: [ name: 'foo', from: 'a', to: 'b' ]
+      expect(workflow).to.have.property 'foo'
+                              .that.is.a 'function'
+
     context 'options', ->
       it 'assigns initial step', ->
         workflow = new Workflow initialStep: 'off'

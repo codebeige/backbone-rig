@@ -55,6 +55,7 @@ class Workflow
   constructor: (options) ->
     _(@).extend config(options)
     opts = custom(options)
+    @createTransitions()
     @currentStep = @initialStep
     @initialize opts
     step(@steps, @currentStep).enter.call @, opts
