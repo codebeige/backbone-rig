@@ -169,7 +169,7 @@ When calling a transition with any arguments these are forwarded to the `enter`
 callback:
 
     login = new LoginSteps($ 'body')
-    login.error 'Could not login'
+    login.fail 'Could not login'
 
 
 Additionally a series of events will be triggered to allow hooking into the
