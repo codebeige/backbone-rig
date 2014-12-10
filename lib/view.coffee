@@ -5,7 +5,7 @@ list = (value) ->
 
 class View extends Backbone.View
 
-  markup: ->
+  layout: ->
     ''
 
   content: ->
@@ -22,7 +22,7 @@ class View extends Backbone.View
 
   setElement: (el, delegate) ->
     super
-    @$el.html @markup()
+    @$el.html @layout()
     @
 
   render: ->

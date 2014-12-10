@@ -47,8 +47,8 @@ describe 'Rig.View', ->
         expect(original).to.have.been.calledOnce
         expect(original).to.have.been.calledWith el, false
 
-      it 'creates markup inside el', ->
-        view.markup = -> '<ul></ul>'
+      it 'creates layout inside el', ->
+        view.layout = -> '<ul></ul>'
         view.setElement view.el
         expect(view.$el).to.have.$html '<ul></ul>'
 
