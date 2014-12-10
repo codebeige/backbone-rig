@@ -187,6 +187,17 @@ argument followed by any additional arguments from the transition call:
 
 
 
+## Slots
+
+Use a *Slot* to manage switching views inside an element. Keeps track of the
+current view and takes care of rendering and housekeeping:
+
+    sidebar = new Slot
+    $('body').append sidebar.el
+    sidebar.switch new FileIndexView
+
+
+
 # TODO (not yet implemented)
 
 ## Routes
