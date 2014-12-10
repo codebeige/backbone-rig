@@ -6,7 +6,7 @@ list = (value) ->
 class View extends Backbone.View
 
   layout: ->
-    ''
+    false
 
   content: ->
     @$el

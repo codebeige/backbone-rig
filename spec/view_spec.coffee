@@ -27,6 +27,10 @@ describe 'Rig.View', ->
     it 'is a Backbone view', ->
       expect(view).to.be.an.instanceOf Backbone.View
 
+    it 'does not create a layout by default', ->
+      layout = view.layout()
+      expect(layout).to.be.false
+
     describe '#setElement()', ->
 
       el = null
