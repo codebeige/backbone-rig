@@ -68,7 +68,7 @@ rendering a `template` from serialized `data`.
         title: @model.escape 'title'
 
 
-Static `markup` can optionally be rendered once at creation. Render will only
+Static `layout` can optionally be rendered once at creation. Render will only
 update the defined `content`. It is also possible to render a list of elements.
 
     class TasksView extends Rig.View
@@ -76,7 +76,7 @@ update the defined `content`. It is also possible to render a list of elements.
       initialize: ->
         @listenTo @collection, 'change', @render
 
-      markup: ->
+      layout: ->
         '<ul></ul>'
 
       template: (data) ->

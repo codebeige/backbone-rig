@@ -5,8 +5,8 @@ list = (value) ->
 
 class View extends Backbone.View
 
-  markup: ->
-    ''
+  layout: ->
+    false
 
   content: ->
     @$el
@@ -20,10 +20,13 @@ class View extends Backbone.View
   initialize: (options = {}) ->
     _(@).extend _(options).pick 'template', 'data'
 
-  setElement: (el, delegate) ->
-    super
-    @$el.html @markup()
+  setElement: (el, delegate, layout) ->
+    super el, delegate
+    @renderLayout() unless layout is false
     @
+
+  renderLayout: ->
+    @$el.html layout if layout = @layout()
 
   render: ->
     data   = @data()
