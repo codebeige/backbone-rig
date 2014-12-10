@@ -20,10 +20,13 @@ class View extends Backbone.View
   initialize: (options = {}) ->
     _(@).extend _(options).pick 'template', 'data'
 
-  setElement: (el, delegate) ->
-    super
-    @$el.html @layout()
+  setElement: (el, delegate, layout) ->
+    super el, delegate
+    @renderLayout() unless layout is false
     @
+
+  renderLayout: ->
+    @$el.html layout if layout = @layout()
 
   render: ->
     data   = @data()

@@ -52,6 +52,17 @@ describe 'Rig.View', ->
         view.setElement view.el
         expect(view.$el).to.have.$html '<ul></ul>'
 
+      it 'leaves el untouched when there is no layout', ->
+        view.$el.html '<ul></ul>'
+        view.layout = -> false
+        view.setElement view.el
+        expect(view.$el).to.have.$html '<ul></ul>'
+
+      it 'takes option for skipping layout', ->
+        view.layout = -> '<ul></ul>'
+        view.setElement view.el, null, no
+        expect(view.$el).to.not.have.$html '<ul></ul>'
+
     describe '#render()', ->
 
       template = null
