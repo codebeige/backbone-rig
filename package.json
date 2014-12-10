@@ -1,6 +1,6 @@
 {
   "name": "backbone-rig",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Rig your Backbone applications.",
   "scripts": {
     "test": "browserify -p [ mocaccino -R dot ] --extension=.coffee spec | phantomic --brout"
