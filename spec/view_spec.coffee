@@ -47,21 +47,33 @@ describe 'Rig.View', ->
         expect(original).to.have.been.calledOnce
         expect(original).to.have.been.calledWith el, false
 
-      it 'creates layout inside el', ->
+      context 'layout', ->
+
+        renderLayout = null
+
+        beforeEach ->
+          renderLayout = @stub view, 'renderLayout'
+
+        it 'creates layout by default', ->
+          view.setElement view.el
+          expect(renderLayout).to.have.been.calledOnce
+
+        it 'takes option for skipping layout', ->
+          view.setElement view.el, null, no
+          expect(renderLayout).to.not.have.called
+
+    describe '#renderLayout()', ->
+
+      it 'updates markup of el', ->
         view.layout = -> '<ul></ul>'
-        view.setElement view.el
+        view.renderLayout()
         expect(view.$el).to.have.$html '<ul></ul>'
 
       it 'leaves el untouched when there is no layout', ->
         view.$el.html '<ul></ul>'
         view.layout = -> false
-        view.setElement view.el
+        view.renderLayout()
         expect(view.$el).to.have.$html '<ul></ul>'
-
-      it 'takes option for skipping layout', ->
-        view.layout = -> '<ul></ul>'
-        view.setElement view.el, null, no
-        expect(view.$el).to.not.have.$html '<ul></ul>'
 
     describe '#render()', ->
 
